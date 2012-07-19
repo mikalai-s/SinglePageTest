@@ -10,10 +10,6 @@
         , cached: 'libs/require/cached'
         , debug: 'libs/debug/ba-debug.min'
         , viewer: 'libs/knockout/viewer.binding'
-    },
-    config: {
-        "views/home-index": {
-            pageContent: "#body"
-        }
+        , json: 'libs/require/json'
     }
 });

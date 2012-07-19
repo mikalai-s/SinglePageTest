@@ -132,12 +132,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SinglePageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\config.js" />
+    <Content Include="Scripts\page.js" />
     <Content Include="Scripts\views\home-about.htm" />
     <Content Include="Scripts\views\home-about.js" />
     <Content Include="Scripts\views\home-contact.htm" />
@@ -306,7 +307,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Shared\_Single.cshtml" />
+    <Content Include="Views\_Single.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
