@@ -12,12 +12,17 @@ namespace SinglePageTest.Controllers
         {
             if (Request.IsAjaxRequest())
             {
+                // if it's view model load request
                 base.OnActionExecuting(filterContext);
             }
-            var module = string.Format("views/{0}-{1}",
-                filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.ToLower(),
-                filterContext.ActionDescriptor.ActionName.ToLower());
-            filterContext.Result = View("~/Views/_Single.cshtml", module);
+            else
+            {
+                // if it's page request
+                var module = string.Format("views/{0}-{1}",
+                    filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.ToLower(),
+                    filterContext.ActionDescriptor.ActionName.ToLower());
+                filterContext.Result = View("~/Views/_Single.cshtml", (object)module);
+            }
         }
     }
 
