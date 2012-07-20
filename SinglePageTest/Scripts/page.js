@@ -7,7 +7,8 @@
 
                 $.ajax({
                     url: window.location,
-                    dataType: 'json',
+                    type: "post",
+                    dataType: "json",
                     cache: false,
                     success: function (viewModel) {
                         ko.applyBindings(viewModel, document.getElementsByTagName("html")[0]);

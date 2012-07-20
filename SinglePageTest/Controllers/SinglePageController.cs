@@ -12,16 +12,20 @@ namespace SinglePageTest.Controllers
         {
             if (Request.IsAjaxRequest())
             {
-                // if it's view model load request
+                // if it's a view model load request
                 base.OnActionExecuting(filterContext);
             }
-            else
+            else if (Request.HttpMethod == "GET")
             {
-                // if it's page request
+                // if it's a page request
                 var module = string.Format("views/{0}-{1}",
                     filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.ToLower(),
                     filterContext.ActionDescriptor.ActionName.ToLower());
-                filterContext.Result = View("~/Views/_Single.cshtml", (object)module);
+                filterContext.Result = View("~/Views/_Single.cshtml", model: module);
+            }
+            else
+            {
+                throw new NotImplementedException();
             }
         }
     }

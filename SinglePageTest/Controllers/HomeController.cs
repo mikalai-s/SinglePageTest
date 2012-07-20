@@ -18,7 +18,7 @@ namespace SinglePageTest.Controllers
                     new { name = "One" },
                     new { name = "Two" },
                 }
-            }, JsonRequestBehavior.AllowGet);
+            });
         }
 
         public ActionResult About()
@@ -27,7 +27,7 @@ namespace SinglePageTest.Controllers
             {
                 title = "About",
                 message = "This is about screen. Today is " + DateTime.Now
-            }, JsonRequestBehavior.AllowGet);
+            });
         }
 
         public ActionResult Contact()
@@ -36,7 +36,7 @@ namespace SinglePageTest.Controllers
             {
                 title = "Contact",
                 message = "(403) 123 4567 - Mikalai Silivonik"
-            }, JsonRequestBehavior.AllowGet);
+            });
         }
     }
 }
