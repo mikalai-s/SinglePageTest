@@ -1,13 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SinglePageTest.Extensions;
 
 namespace SinglePageTest.Controllers
 {
     public abstract class SinglePageController : Controller
     {
+        protected HtmlHelper Html
+        {
+            get
+            {
+                return this._html ?? (this._html = new HtmlHelper(
+                    new ViewContext(ControllerContext, new WebFormView(this.ControllerContext, "fake"), new ViewDataDictionary(), new TempDataDictionary(), new StringWriter()),
+                    new ViewPage()));
+            }
+        } private HtmlHelper _html = null;
+
+
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (Request.IsAjaxRequest())
@@ -18,14 +31,14 @@ namespace SinglePageTest.Controllers
             else if (Request.HttpMethod == "GET")
             {
                 // if it's a page request
-                var module = string.Format("views/{0}-{1}",
-                    filterContext.ActionDescriptor.ControllerDescriptor.ControllerName.ToLower(),
-                    filterContext.ActionDescriptor.ActionName.ToLower());
+                var module = Utils.GetSinglePageModuleName(
+                    filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
+                    filterContext.ActionDescriptor.ActionName);
                 filterContext.Result = View("~/Views/_Single.cshtml", model: module);
             }
             else
             {
-                throw new NotImplementedException();
+                filterContext.Result = new HttpNotFoundResult();
             }
         }
     }

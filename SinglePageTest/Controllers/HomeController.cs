@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
+using SinglePageTest.Extensions;
 
 namespace SinglePageTest.Controllers
 {
@@ -26,7 +28,7 @@ namespace SinglePageTest.Controllers
             return Json(new
             {
                 title = "About",
-                message = "This is about screen. Today is " + DateTime.Now
+                message = "This is about screen. Time is " + DateTime.Now
             });
         }
 
@@ -35,7 +37,8 @@ namespace SinglePageTest.Controllers
             return Json(new
             {
                 title = "Contact",
-                message = "(403) 123 4567 - Mikalai Silivonik"
+                message = "(403) 123 4567 - Mikalai Silivonik",
+                indexLink = this.Html.SinglePageActionLink("Single Page Index", "Index").ToHtmlString()
             });
         }
     }

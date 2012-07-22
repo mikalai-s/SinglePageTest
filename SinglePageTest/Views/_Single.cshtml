@@ -11,9 +11,9 @@
         <header>Single Page App Demo - <span data-bind="text: title"></span></header>
         <nav>
             <ul>
-                <li>@Html.ActionLink("Home", "Index", null, new { hook = "", module = "views/home-index" })</li>
-                <li>@Html.ActionLink("About", "About", null, new { hook = "", module = "views/home-about" })</li>
-                <li>@Html.ActionLink("Contact", "Contact", null, new { hook = "", module = "views/home-contact" })</li>
+                <li>@Html.ActionLink("Non-Single Page Index", "Index")</li>
+                <li>@Html.SinglePageActionLink("Single Page About", "About")</li>
+                <li>@Html.SinglePageActionLink("Single Page Contact", "Contact")</li>
             </ul>
         </nav>
         <div id="body"></div>
