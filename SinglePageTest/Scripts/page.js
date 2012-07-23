@@ -1,32 +1,12 @@
 ﻿define(
-    ["jquery", "knockout"],
+    ["jquery", "knockout", "debug"],
     function ($, ko) {
 
-        // handle popstate event only if browser supports History API
-        if (history.pushState) {
-            // Hook popstate event in 1 second to prevent Chrome's popstate on page load
-            // Ugly but effective
-
-            window.setTimeout(function () {
-                // hook browser's back button click
-                $(window).on('popstate', function () {
-                    var module = history.state && history.state.module;
-                    if (module) {
-                        require([module], function (pageModule) {
-                            pageModule.load();
-                        });
-                    }
-                });
-            }, 700);
-        }
-
-
         // handle all single page links on the page
-        function hookSinglePageLinks() {
+        function hookSinglePageLinks(container) {
             // hook single page links only if browser supports History API
             if (history.pushState) {
-                $("a[hook]")
-                    .removeAttr("hook")
+                container.find("a[module]")
                     .on("click", function () {
                         var module = $(this).attr("module");
 
@@ -41,10 +21,30 @@
             }
         }
 
+        // handle popstate event only if browser supports History API
+        if (history.pushState) {
+            // Hook popstate event in 1 second to prevent Chrome's popstate on page load
+            // Ugly but effective
+            window.setTimeout(function () {
+                // hook browser's back button click
+                $(window).on('popstate', function () {
+                    var module = history.state && history.state.module;
+                    if (module) {
+                        require([module], function (pageModule) {
+                            pageModule.load();
+                        });
+                    }
+                });
+            }, 700);
+        }
+
+        // handle click event of all links that have module attribute
+        hookSinglePageLinks($(document));
+
         return {
             load: function (template) {
 
-                $("#body").html(template);
+                var $body = $("#body").html(template);
 
                 $.ajax({
                     url: window.location,
@@ -53,7 +53,8 @@
                     success: function (viewModel) {
                         ko.applyBindings(viewModel, document.getElementsByTagName("html")[0]);
 
-                        hookSinglePageLinks();
+                        // handle single page link in given template
+                        hookSinglePageLinks($body);
                     }
                 });
             }

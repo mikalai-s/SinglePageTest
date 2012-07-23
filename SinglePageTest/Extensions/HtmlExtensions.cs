@@ -87,7 +87,6 @@ namespace SinglePageTest.Extensions
             TagBuilder builder = builder2;
             builder.MergeAttributes<string, object>(htmlAttributes);
             builder.MergeAttribute("href", str);
-            builder.MergeAttribute("hook", "");
 
             controllerName = string.IsNullOrEmpty(controllerName) ? new ReflectedControllerDescriptor(htmlHelper.ViewContext.Controller.GetType()).ControllerName : controllerName;
             builder.MergeAttribute("module", Utils.GetSinglePageModuleName(controllerName, actionName));
