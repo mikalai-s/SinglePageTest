@@ -1,22 +1,36 @@
-﻿@model string
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <title data-bind="text: title"></title>
-        <meta name="viewport" content="width=device-width" />
-        <script type="text/javascript" src="~/Scripts/libs/require/require.min.js" data-main="@Url.Content("~/Scripts/bootstrap")"></script>
-    </head>
-    <body>
-        <header>Single Page App Demo - <span data-bind="text: title"></span></header>
-        <nav>
-            <ul>
-                <li>@Html.ActionLink("Non-Single Page Index", "Index")</li>
-                <li>@Html.SinglePageActionLink("Single Page About", "About")</li>
-                <li>@Html.SinglePageActionLink("Single Page Contact", "Contact")</li>
-            </ul>
-        </nav>
-        <article id="body" module="@Model"></article>
-        <footer></footer>
-    </body>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title data-bind="text: title"></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width" />
+    @*TODO: Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons*@
+    <link rel="stylesheet" type="text/css" href="~/Styles/init.css" />
+    <script src="~/Scripts/libs/modernizr/modernizr-2.5.3.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/libs/require/require.min.js" data-main="@Url.Content("~/Scripts/bootstrap")"></script>
+</head>
+<body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+<header>Single Page App Demo - <span data-bind="text: title"></span>
+    <nav>
+        <ul>
+            <li>@Html.ActionLink("Non-Single Page Index", "Index")</li>
+            <li>@Html.SinglePageActionLink("Single Page About", "About")</li>
+            <li>@Html.SinglePageActionLink("Single Page Contact", "Contact")</li>
+        </ul>
+    </nav>
+</header>
+<article id="page" module="@Model"></article>
+<footer></footer>
+@*<script>
+    var _gaq = [['_setAccount', 'UA-XXXXX-X'], ['_trackPageview']];
+    (function (d, t) {
+        var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+        g.src = ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+        s.parentNode.insertBefore(g, s)
+    }(document, 'script'));
+</script>*@
+</body>
 </html>

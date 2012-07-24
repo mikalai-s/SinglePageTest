@@ -138,6 +138,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Scripts\libs\modernizr\modernizr-2.5.3.min.js" />
+    <Content Include="Styles\init.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\page.js" />
     <Content Include="Scripts\views\home-about.htm" />

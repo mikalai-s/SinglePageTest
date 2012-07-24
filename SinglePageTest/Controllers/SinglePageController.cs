@@ -36,8 +36,8 @@ namespace SinglePageTest.Controllers
                     filterContext.ActionDescriptor.ActionName);
                 filterContext.Result = View("~/Views/_Single.cshtml", model: module);
 
-                // cache single page for next 24 hours
-                filterContext.HttpContext.Response.Cache.SetExpires(DateTime.Now.AddHours(24));
+                // cache single page for next 8 hours
+                filterContext.HttpContext.Response.Cache.SetExpires(DateTime.Now.AddHours(8));
             }
             else
             {

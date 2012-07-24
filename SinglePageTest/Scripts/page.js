@@ -5,7 +5,7 @@ define(
     ["jquery", "knockout", "debug"],
     function ($, ko) {
 
-        var $body = $("#body");
+        var $page = $("#page");
 
         // checks whether given browser support History API
         function supportsHistoryApi() {
@@ -33,7 +33,7 @@ define(
             hookSinglePageLinks($(document));
 
             // initial page load
-            loadPage($body.attr("module"));
+            loadPage($page.attr("module"));
         }
 
         // handle all single page links on the page
@@ -58,7 +58,7 @@ define(
             require(
                 ["text!" + module + ".htm"],
                 function(template) {
-                    $body.html(template);
+                    $page.html(template);
 
                     $.ajax({
                         url: window.location,
@@ -68,7 +68,7 @@ define(
                             ko.applyBindings(viewModel, document.getElementsByTagName("html")[0]);
 
                             // handle single page link in given template
-                            hookSinglePageLinks($body);
+                            hookSinglePageLinks($page);
 
                             // everything is loaded and binded - load module script
                             require([module]);
