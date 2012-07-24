@@ -13,3 +13,6 @@
         , json: 'libs/require/json'
     }
 });
+
+// initialize current page
+require(["page"]);

@@ -16,8 +16,7 @@
                 <li>@Html.SinglePageActionLink("Single Page Contact", "Contact")</li>
             </ul>
         </nav>
-        <div id="body"></div>
+        <article id="body" module="@Model"></article>
         <footer></footer>
-        <script type="text/javascript">require(['@Model'], function (pageModule) { pageModule.load(); })</script>
     </body>
 </html>
