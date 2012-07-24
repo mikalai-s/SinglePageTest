@@ -21,7 +21,7 @@ Thumbs.db
 *.ilk
 *.log
 [Bb]in
-[Dd]ebug*/
+[Dd]ebug*/*
 *.lib
 *.sbr
 obj/
@@ -33,3 +33,6 @@ packages/
 
 #Allow NuGet.exe (do not ignore)
 !NuGet.exe
+
+#Allow debug scripts
+!debug*/*.js
