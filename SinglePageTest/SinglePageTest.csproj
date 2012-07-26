@@ -130,21 +130,23 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\HomeApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SinglePageController.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
+    <Compile Include="Extensions\MyMvcHtmlString.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\Utils.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\HomeModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scripts\libs\modernizr\modernizr-2.5.3.min.js" />
     <Content Include="Styles\init.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\page.js" />
-    <Content Include="Scripts\views\home-about.htm" />
     <Content Include="Scripts\views\home-about.js" />
-    <Content Include="Scripts\views\home-contact.htm" />
     <Content Include="Scripts\views\home-contact.js" />
     <Content Include="Scripts\views\home-index.js" />
   </ItemGroup>
@@ -301,7 +303,6 @@
     <Content Include="Scripts\libs\testing\qunit.js" />
     <Content Include="Scripts\libs\testing\specit.js" />
     <Content Include="Scripts\libs\testing\specit.tests.js" />
-    <Content Include="Scripts\views\home-index.htm" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -311,10 +312,11 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_Single.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

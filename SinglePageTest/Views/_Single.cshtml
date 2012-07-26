@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     @*Use the .htaccess and remove these lines to avoid edge case issues. More info: h5bp.com/i/378*@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title data-bind="text: title"></title>
+    <title data-bind="text: title">@Model.title</title>
     <meta name="description" content="">
     @*Mobile viewport optimized: h5bp.com/viewport*@
     <meta name="viewport" content="width=device-width" />
@@ -20,7 +20,7 @@
 </head>
 <body>
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-<header>Single Page App Demo - <span data-bind="text: title"></span>
+<header>Single Page App Demo - <span data-bind="text: title">@Model.title</span>
     <nav>
         <ul>
             <li>@Html.ActionLink("Non-Single Page Index", "Index")</li>
@@ -29,7 +29,7 @@
         </ul>
     </nav>
 </header>
-<article id="page" module="@Model"></article>
+<article id="page" module="@Model.module">@RenderBody()</article>
 <footer></footer>
 @*Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID. mathiasbynens.be/notes/async-analytics-snippet*@
 @*<script>

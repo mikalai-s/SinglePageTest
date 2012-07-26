@@ -21,29 +21,29 @@ namespace SinglePageTest.Controllers
         } private HtmlHelper _html = null;
 
 
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            if (Request.IsAjaxRequest())
-            {
-                // if it's a view model load request
-                base.OnActionExecuting(filterContext);
-            }
-            else if (Request.HttpMethod == "GET")
-            {
-                // if it's a page request
-                var module = Utils.GetSinglePageModuleName(
-                    filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
-                    filterContext.ActionDescriptor.ActionName);
-                filterContext.Result = View("~/Views/_Single.cshtml", model: module);
+        //protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        //{
+        //    if (Request.IsAjaxRequest())
+        //    {
+        //        // if it's a view model load request
+        //        base.OnActionExecuting(filterContext);
+        //    }
+        //    else if (Request.HttpMethod == "GET")
+        //    {
+        //        // if it's a page request
+        //        var module = Utils.GetSinglePageModuleName(
+        //            filterContext.ActionDescriptor.ControllerDescriptor.ControllerName,
+        //            filterContext.ActionDescriptor.ActionName);
+        //        filterContext.Result = View("~/Views/_Single.cshtml", model: module);
 
-                // cache single page for next 8 hours
-                filterContext.HttpContext.Response.Cache.SetExpires(DateTime.Now.AddHours(8));
-            }
-            else
-            {
-                filterContext.Result = new HttpNotFoundResult();
-            }
-        }
+        //        // cache single page for next 8 hours
+        //        filterContext.HttpContext.Response.Cache.SetExpires(DateTime.Now.AddHours(8));
+        //    }
+        //    else
+        //    {
+        //        filterContext.Result = new HttpNotFoundResult();
+        //    }
+        //}
     }
 
 }

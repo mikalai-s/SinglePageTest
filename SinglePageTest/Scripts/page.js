@@ -33,7 +33,7 @@ define(
             hookSinglePageLinks($(document));
 
             // initial page load
-            loadPage($page.attr("module"));
+            //loadPage($page.attr("module"));
         }
 
         // handle all single page links on the page
@@ -55,13 +55,14 @@ define(
 
         // load given module into current page
         function loadPage(module) {
-            require(
-                ["text!" + module + ".htm"],
-                function(template) {
+            $.ajax({
+                url: window.location.pathname + "Template",
+                type: "get",
+                success: function (template) {
                     $page.html(template);
 
                     $.ajax({
-                        url: window.location,
+                        url: window.location.pathname + "Data",
                         type: "post",
                         dataType: "json",
                         success: function (viewModel) {
@@ -74,7 +75,8 @@ define(
                             require([module]);
                         }
                     });
-                });
+                }
+            });
         }
 
         init();
