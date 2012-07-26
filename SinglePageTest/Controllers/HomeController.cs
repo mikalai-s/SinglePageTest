@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,11 +11,11 @@ using SinglePageTest.Models;
 
 namespace SinglePageTest.Controllers
 {
-    public class HomeController : SinglePageController
+    public class HomeController : Controller
     {
         public ActionResult Index()
         {
-            if(Request.IsAjaxRequest())
+            if (Request.IsAjaxRequest())
                 return PartialView("Index", GetIndexData());
             return View("Index", "~/Views/_Single.cshtml", GetIndexData());
         }
@@ -36,7 +37,7 @@ namespace SinglePageTest.Controllers
 
         public ActionResult About()
         {
-            if(Request.IsAjaxRequest())
+            if (Request.IsAjaxRequest())
                 return PartialView("About", GetAboutData());
             return View("About", "~/Views/_Single.cshtml", GetAboutData());
         }
@@ -54,19 +55,22 @@ namespace SinglePageTest.Controllers
 
         public ActionResult Contact()
         {
-            if(Request.IsAjaxRequest())
+            if (Request.IsAjaxRequest())
                 return PartialView("Contact", GetContactData());
             return View("Contact", "~/Views/_Single.cshtml", GetContactData());
         }
 
         public ContactModel GetContactData()
         {
+            var html = new HtmlHelper(
+                    new ViewContext(ControllerContext, new WebFormView(this.ControllerContext, "fake"), new ViewDataDictionary(), new TempDataDictionary(), new StringWriter()),
+                    new ViewPage());
             return new ContactModel
             {
                 title = "Contact",
                 module = Utils.GetSinglePageModuleName("Home", "Contact"),
                 message = "(403) 123 4567 - Mikalai Silivonik",
-                indexLink = MyMvcHtmlString.Create(this.Html.SinglePageActionLink("Single Page Index", "Index").ToHtmlString())
+                indexLink = html.SinglePageActionLink("Single Page Index", "Index")
             };
         }
     }

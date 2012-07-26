@@ -60,7 +60,13 @@ define(
                 type: "get",
                 cache: false,
                 success: function (view) {
+                    var $title = $(view).first("#title"),
+                        title;
+
                     $page.html(view);
+
+                    title = ($title.length !== 0) ? $title.val() : window.location.pathname;
+                    ko.applyBindings({ title: title }, document.getElementsByTagName("html")[0]);
 
                     // handle single page link in given template
                     hookSinglePageLinks($page);
