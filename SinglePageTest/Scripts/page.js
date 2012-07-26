@@ -59,13 +59,12 @@ define(
                 url: window.location.pathname,
                 type: "get",
                 cache: false,
-                success: function (view) {
-                    var $title = $(view).first("#title"),
-                        title;
+                success: function (view, status, xhr) {
+                    var title = xhr.getResponseHeader("page-title") || window.location.pathname;
 
                     $page.html(view);
 
-                    title = ($title.length !== 0) ? $title.val() : window.location.pathname;
+                    // bind page title
                     ko.applyBindings({ title: title }, document.getElementsByTagName("html")[0]);
 
                     // handle single page link in given template

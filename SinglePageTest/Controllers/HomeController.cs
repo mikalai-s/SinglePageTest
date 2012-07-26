@@ -11,7 +11,7 @@ using SinglePageTest.Models;
 
 namespace SinglePageTest.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : SinglePageController
     {
         public ActionResult Index()
         {

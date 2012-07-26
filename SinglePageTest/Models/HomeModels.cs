@@ -5,30 +5,38 @@ using System.Web;
 
 namespace SinglePageTest.Models
 {
-    public struct IndexModel
+    public interface IPageModel
     {
-        public string title;
-        public string module;
-        public IEnumerable<IndexItemModel> items;
+        string title { get; }
+    }
+
+
+    public struct IndexModel : IPageModel
+    {
+        public string title { get; set; }
+        public string module { get; set; }
+        public IEnumerable<IndexItemModel> items { get; set; }
     }
 
     public struct IndexItemModel
     {
-        public string name;
+        public string name { get; set; }
     }
 
-    public struct AboutModel
+
+    public struct AboutModel : IPageModel
     {
-        public string title;
-        public string module;
-        public string message;
+        public string title { get; set; }
+        public string module { get; set; }
+        public string message { get; set; }
     }
 
-    public struct ContactModel
+
+    public struct ContactModel : IPageModel
     {
-        public string title;
-        public string module;
-        public string message;
-        public object indexLink;
+        public string title { get; set; }
+        public string module { get; set; }
+        public string message { get; set; }
+        public object indexLink { get; set; }
     }
 }

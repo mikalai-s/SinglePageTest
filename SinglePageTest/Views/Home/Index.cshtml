@@ -1,7 +1,5 @@
 ﻿@model dynamic
 
-<input type="hidden" id="title" value="@Model.title" />
-
 <section>
     <ul>
         @foreach (var item in (Model.items ?? new SinglePageTest.Models.IndexItemModel[] { }))
