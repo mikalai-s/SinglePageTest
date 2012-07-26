@@ -3,17 +3,12 @@
 @using System.Collections.Generic;
 
 @model dynamic
-@{
-    var items = (Model.items == null || Model.items.Length == 0)
-        ? new[] { new IndexItemModel() }
-        : Model.items;
-}
 
 <section>
-    <ul data-bind="foreach: items">
-        @foreach(var item in items)
+    <ul>
+        @foreach (var item in (Model.items ?? new IndexItemModel[] { }))
         {
-        <li data-bind="text: name">@item.name</li>
+            <li>@item.name</li>
         }
     </ul>
 </section>

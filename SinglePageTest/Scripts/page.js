@@ -56,25 +56,17 @@ define(
         // load given module into current page
         function loadPage(module) {
             $.ajax({
-                url: window.location.pathname + "Template",
+                url: window.location.pathname,
                 type: "get",
-                success: function (template) {
-                    $page.html(template);
+                cache: false,
+                success: function (view) {
+                    $page.html(view);
 
-                    $.ajax({
-                        url: window.location.pathname + "Data",
-                        type: "post",
-                        dataType: "json",
-                        success: function (viewModel) {
-                            ko.applyBindings(viewModel, document.getElementsByTagName("html")[0]);
+                    // handle single page link in given template
+                    hookSinglePageLinks($page);
 
-                            // handle single page link in given template
-                            hookSinglePageLinks($page);
-
-                            // everything is loaded and binded - load module script
-                            require([module]);
-                        }
-                    });
+                    // everything is loaded and binded - load module script
+                    require([module]);
                 }
             });
         }

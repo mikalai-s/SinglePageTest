@@ -14,20 +14,10 @@ namespace SinglePageTest.Controllers
     {
         public ActionResult Index()
         {
+            if(Request.IsAjaxRequest())
+                return PartialView("Index", GetIndexData());
             return View("Index", "~/Views/_Single.cshtml", GetIndexData());
         }
-
-        public ActionResult IndexTemplate()
-        {
-            this.Response.Cache.SetExpires(DateTime.Now.AddMinutes(5));
-            return PartialView("Index", new IndexModel());
-        }
-
-        public ActionResult IndexData()
-        {
-            return Json(GetIndexData());
-        }
-
 
         public IndexModel GetIndexData()
         {
@@ -46,18 +36,9 @@ namespace SinglePageTest.Controllers
 
         public ActionResult About()
         {
+            if(Request.IsAjaxRequest())
+                return PartialView("About", GetAboutData());
             return View("About", "~/Views/_Single.cshtml", GetAboutData());
-        }
-
-        public ActionResult AboutTemplate()
-        {
-            this.Response.Cache.SetExpires(DateTime.Now.AddMinutes(5));
-            return PartialView("About", new AboutModel());
-        }
-
-        public ActionResult AboutData()
-        {
-            return Json(GetAboutData());
         }
 
         public AboutModel GetAboutData()
@@ -73,18 +54,9 @@ namespace SinglePageTest.Controllers
 
         public ActionResult Contact()
         {
+            if(Request.IsAjaxRequest())
+                return PartialView("Contact", GetContactData());
             return View("Contact", "~/Views/_Single.cshtml", GetContactData());
-        }
-
-        public ActionResult ContactTemplate()
-        {
-            this.Response.Cache.SetExpires(DateTime.Now.AddMinutes(5));
-            return PartialView("Contact", new ContactModel());
-        }
-
-        public ActionResult ContactData()
-        {
-            return Json(GetContactData());
         }
 
         public ContactModel GetContactData()
