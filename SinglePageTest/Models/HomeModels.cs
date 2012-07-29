@@ -5,15 +5,8 @@ using System.Web;
 
 namespace SinglePageTest.Models
 {
-    public interface IPageModel
+    public struct IndexModel
     {
-        string title { get; }
-    }
-
-
-    public struct IndexModel : IPageModel
-    {
-        public string title { get; set; }
         public string module { get; set; }
         public IEnumerable<IndexItemModel> items { get; set; }
     }
@@ -24,17 +17,15 @@ namespace SinglePageTest.Models
     }
 
 
-    public struct AboutModel : IPageModel
+    public struct AboutModel
     {
-        public string title { get; set; }
         public string module { get; set; }
         public string message { get; set; }
     }
 
 
-    public struct ContactModel : IPageModel
+    public struct ContactModel
     {
-        public string title { get; set; }
         public string module { get; set; }
         public string message { get; set; }
         public object indexLink { get; set; }

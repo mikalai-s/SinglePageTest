@@ -25,6 +25,9 @@ define(
                         if (module) {
                             loadPage(module);
                         }
+                        else {
+                            history.go();
+                        }
                     });
                 }, 700);
             }
@@ -53,25 +56,36 @@ define(
             }
         }
 
+        function initPage($page, module, html, viewModel) {
+            $page.html(html);
+
+            ko.applyBindings(viewModel, document.getElementsByTagName("html")[0]);
+
+            // handle single page link in given template
+            hookSinglePageLinks($page);
+
+            // everything is loaded and binded - load module script
+            require([module]);
+        }
+
         // load given module into current page
         function loadPage(module) {
             $.ajax({
                 url: window.location.pathname,
                 type: "get",
                 cache: false,
-                success: function (view, status, xhr) {
-                    var title = xhr.getResponseHeader("page-title") || window.location.pathname;
+                success: function (data, status, xhr) {
+                    var title = xhr.getResponseHeader("page-title") || window.location.pathname,
+                        requiresTemplate = xhr.getResponseHeader("requires-template");
 
-                    $page.html(view);
-
-                    // bind page title
-                    ko.applyBindings({ title: title }, document.getElementsByTagName("html")[0]);
-
-                    // handle single page link in given template
-                    hookSinglePageLinks($page);
-
-                    // everything is loaded and binded - load module script
-                    require([module]);
+                    if (requiresTemplate) {
+                        require(["text!" + module + ".htm"], function (template) {
+                            initPage($page, module, template, $.extend(true, data, { title: title }));
+                        });
+                    }
+                    else {
+                        initPage($page, module, data, { title: title });
+                    }
                 }
             });
         }

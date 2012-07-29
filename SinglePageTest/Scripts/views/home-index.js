@@ -1,6 +1,6 @@
 ﻿define(
     [],
-    function (page, template) {
+    function () {
         
     }
 );

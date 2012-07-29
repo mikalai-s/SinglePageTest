@@ -15,16 +15,13 @@ namespace SinglePageTest.Controllers
     {
         public ActionResult Index()
         {
-            if (Request.IsAjaxRequest())
-                return PartialView("Index", GetIndexData());
-            return View("Index", "~/Views/_Single.cshtml", GetIndexData());
+            return SinglePageView("Index", "Index", GetIndexData());
         }
 
         public IndexModel GetIndexData()
         {
             return new IndexModel
             {
-                title = "Index",
                 module = Utils.GetSinglePageModuleName("Home", "Index"),
                 items = new IndexItemModel[]
                 {
@@ -37,16 +34,13 @@ namespace SinglePageTest.Controllers
 
         public ActionResult About()
         {
-            if (Request.IsAjaxRequest())
-                return PartialView("About", GetAboutData());
-            return View("About", "~/Views/_Single.cshtml", GetAboutData());
+            return SinglePageView("About", "About", GetAboutData());
         }
 
         public AboutModel GetAboutData()
         {
             return new AboutModel
             {
-                title = "About",
                 module = Utils.GetSinglePageModuleName("Home", "About"),
                 message = "This is about screen. Time is " + DateTime.Now
             };
@@ -55,9 +49,7 @@ namespace SinglePageTest.Controllers
 
         public ActionResult Contact()
         {
-            if (Request.IsAjaxRequest())
-                return PartialView("Contact", GetContactData());
-            return View("Contact", "~/Views/_Single.cshtml", GetContactData());
+            return SinglePageView("Contact", "Contact", GetContactData());
         }
 
         public ContactModel GetContactData()
@@ -67,11 +59,24 @@ namespace SinglePageTest.Controllers
                     new ViewPage());
             return new ContactModel
             {
-                title = "Contact",
                 module = Utils.GetSinglePageModuleName("Home", "Contact"),
                 message = "(403) 123 4567 - Mikalai Silivonik",
                 indexLink = html.SinglePageActionLink("Single Page Index", "Index")
             };
+        }
+
+
+        public ActionResult Tasks()
+        {
+            return SinglePageData(new
+            {
+                items = new [] 
+                {
+                    new { name = "Do this" },
+                    new { name = "Do that" },
+                    new { name = "Do nothing then" },
+                }
+            });
         }
     }
 }

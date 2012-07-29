@@ -141,6 +141,8 @@
     <Compile Include="Models\HomeModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scripts\libs\modernizr\modernizr-2.5.3.min.js" />
+    <Content Include="Scripts\views\home-tasks.htm" />
+    <Content Include="Scripts\views\home-tasks.js" />
     <Content Include="Styles\init.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\page.js" />
