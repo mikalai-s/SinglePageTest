@@ -15,14 +15,13 @@ namespace SinglePageTest.Controllers
     {
         public ActionResult Index()
         {
-            return SinglePageView("Index", "Index", GetIndexData());
+            return ServerBindingResult("Index", GetIndexData());
         }
 
         public IndexModel GetIndexData()
         {
             return new IndexModel
             {
-                module = Utils.GetSinglePageModuleName("Home", "Index"),
                 items = new IndexItemModel[]
                 {
                     new IndexItemModel { name = "One" },
@@ -34,14 +33,13 @@ namespace SinglePageTest.Controllers
 
         public ActionResult About()
         {
-            return SinglePageView("About", "About", GetAboutData());
+            return ServerBindingResult("About", GetAboutData());
         }
 
         public AboutModel GetAboutData()
         {
             return new AboutModel
             {
-                module = Utils.GetSinglePageModuleName("Home", "About"),
                 message = "This is about screen. Time is " + DateTime.Now
             };
         }
@@ -49,7 +47,7 @@ namespace SinglePageTest.Controllers
 
         public ActionResult Contact()
         {
-            return SinglePageView("Contact", "Contact", GetContactData());
+            return ServerBindingResult("Contact", GetContactData());
         }
 
         public ContactModel GetContactData()
@@ -59,7 +57,6 @@ namespace SinglePageTest.Controllers
                     new ViewPage());
             return new ContactModel
             {
-                module = Utils.GetSinglePageModuleName("Home", "Contact"),
                 message = "(403) 123 4567 - Mikalai Silivonik",
                 indexLink = html.SinglePageActionLink("Single Page Index", "Index")
             };
@@ -68,9 +65,9 @@ namespace SinglePageTest.Controllers
 
         public ActionResult Tasks()
         {
-            return SinglePageData(new
+            return ClientBindingResult("Tasks", () => new
             {
-                items = new [] 
+                items = new []
                 {
                     new { name = "Do this" },
                     new { name = "Do that" },

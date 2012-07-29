@@ -36,7 +36,10 @@ define(
             hookSinglePageLinks($(document));
 
             // initial page load
-            //loadPage($page.attr("module"));
+            var clientBindingModule = $page.find("#client-binding-module").attr("client-binding-module");
+            if (clientBindingModule) {
+                loadPage(clientBindingModule);
+            }
         }
 
         // handle all single page links on the page
@@ -72,8 +75,7 @@ define(
         function loadPage(module) {
             $.ajax({
                 url: window.location.pathname,
-                type: "get",
-                cache: false,
+                type: "post",
                 success: function (data, status, xhr) {
                     var title = xhr.getResponseHeader("page-title") || window.location.pathname,
                         requiresTemplate = xhr.getResponseHeader("requires-template");
