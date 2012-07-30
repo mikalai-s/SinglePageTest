@@ -30,7 +30,7 @@
         </ul>
     </nav>
 </header>
-<article id="page">@RenderBody()</article>
+<article id="page" module="@ViewBag.Module" client-binding="@ViewBag.ClientBinding">@RenderBody()</article>
 <footer></footer>
 @*Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID. mathiasbynens.be/notes/async-analytics-snippet*@
 @*<script>

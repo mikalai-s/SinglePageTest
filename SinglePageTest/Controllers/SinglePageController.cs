@@ -10,7 +10,7 @@ namespace SinglePageTest.Controllers
 {
     public class SinglePageController : Controller
     {
-        protected ActionResult ServerBindingResult(string pageTitle, object model)
+        protected ActionResult ServerBindingResult<T>(string pageTitle, Func<T> dataResolver)
         {
             string controller = this.Request.RequestContext.RouteData.Values["controller"].ToString();
             string action = this.Request.RequestContext.RouteData.Values["action"].ToString();
@@ -19,14 +19,22 @@ namespace SinglePageTest.Controllers
             if (Request.IsAjaxRequest())
             {
                 this.Response.Headers.Add("page-title", pageTitle);
-                return PartialView(action, model);
+                return PartialView(action, dataResolver());
             }
 
             ViewBag.Title = pageTitle;
-            return View(action, "~/Views/_Single.cshtml", model);
+            ViewBag.Module = Utils.GetSinglePageModuleName(controller, action);
+            return View(action, "~/Views/_Single.cshtml", dataResolver());
         }
 
-        protected ActionResult ClientBindingResult(string pageTitle, Func<object> dataResolver)
+        /// <summary>
+        /// Client side binding occurs on client. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pageTitle"></param>
+        /// <param name="dataResolver"></param>
+        /// <returns></returns>
+        protected ActionResult ClientBindingResult<T>(string pageTitle, Func<T> dataResolver)
         {
             if (Request.IsAjaxRequest())
             {
@@ -38,8 +46,9 @@ namespace SinglePageTest.Controllers
             string controller = this.Request.RequestContext.RouteData.Values["controller"].ToString();
             string action = this.Request.RequestContext.RouteData.Values["action"].ToString();
 
-            var module = Utils.GetSinglePageModuleName(controller, action);
-            return View("~/Views/_ClientBindingView.cshtml", "~/Views/_Single.cshtml", module);
+            ViewBag.Title = pageTitle;
+            ViewBag.Module = Utils.GetSinglePageModuleName(controller, action);
+            return View("~/Views/_ClientBindingView.cshtml");
         }
     }
 }

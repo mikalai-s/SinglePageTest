@@ -35,10 +35,17 @@ define(
             // handle click event of all links that have module attribute
             hookSinglePageLinks($(document));
 
-            // initial page load
-            var clientBindingModule = $page.find("#client-binding-module").attr("client-binding-module");
-            if (clientBindingModule) {
-                loadPage(clientBindingModule);
+            // get current page module
+            var module = $page.attr("module");
+            var clientBinding = $page.attr("client-binding");
+            if (module) {
+                if (clientBinding) {
+                    // if it's client binding approach, then load current page
+                    loadPage(module);
+                } else {
+                    // if it's server binding approcah, then just load page's js
+                    require([module]);
+                }
             }
         }
 
