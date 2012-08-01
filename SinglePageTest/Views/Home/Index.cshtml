@@ -1,6 +1,6 @@
 ﻿<section>
     <ul>
-        @foreach (var item in (Model.items ?? new SinglePageTest.Models.IndexItemModel[] { }))
+        @foreach (var item in Model.items)
         {
             <li>@item.name</li>
         }

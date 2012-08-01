@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using SinglePageTest.Extensions;
-using SinglePageTest.Models;
 
 namespace SinglePageTest.Controllers
 {
@@ -16,12 +15,12 @@ namespace SinglePageTest.Controllers
         public ActionResult Index()
         {
             return ServerBindingResult("Index", 
-                () => new IndexModel
+                () => new 
                 {
-                    items = new IndexItemModel[]
+                    items = new []
                     {
-                        new IndexItemModel { name = "One" },
-                        new IndexItemModel { name = "Two" },
+                        new { name = "One" },
+                        new { name = "Two" },
                     }
                 }
             );
@@ -31,7 +30,7 @@ namespace SinglePageTest.Controllers
         public ActionResult About()
         {
             return ServerBindingResult("About", 
-                () => new AboutModel
+                () => new
                 {
                     message = "This is about screen. Time is " + DateTime.Now
                 }
@@ -46,7 +45,7 @@ namespace SinglePageTest.Controllers
                     new ViewPage());
 
             return ServerBindingResult("Contact", 
-                () => new ContactModel
+                () => new
                 {
                     message = "(403) 123 4567 - Mikalai Silivonik",
                     indexLink = html.SinglePageActionLink("Single Page Index", "Index")

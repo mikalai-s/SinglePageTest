@@ -10,7 +10,7 @@ using System.Web.Routing;
 
 namespace SinglePageTest.Extensions
 {
-    public static class ObjectExtensions
+    internal static class ObjectExtensions
     {
         public static ExpandoObject ToExpando(this object anonymousObject)
         {
@@ -21,31 +21,35 @@ namespace SinglePageTest.Extensions
                 object value = null;
 
                 var ie = item.Value as IEnumerable;
-                if (ie != null)
+                if (ie != null && ie.GetType().Name.Contains("AnonymousType"))
                 {
-                    value = ie.ToExpandoList();
+                    var list = new List<ExpandoObject>();
+                    foreach (var i in ie)
+                        list.Add(i.ToExpando());
+                    value = list;
                 }
                 else
                 {
-                    value = item.Value.GetType().IsAnonymousType() ? item.Value.ToExpando() : item.Value;
+                    value = item.Value;
                 }
+
                 expando.Add(new KeyValuePair<string, object>(item.Key, value));
             }
             return (ExpandoObject)expando;
         }
 
-        public static IEnumerable<ExpandoObject> ToExpandoList(this IEnumerable ie)
-        {
-            foreach(var item in ie)
-                yield return item.ToExpando();
-        }
-
         public static bool IsAnonymousType(this Type type)
         {
-            bool hasCompilerGeneratedAttribute = true;// type.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Count() > 0;
-            bool nameContainsAnonymousType = type.FullName.Contains("AnonymousType");
-            bool isAnonymousType = hasCompilerGeneratedAttribute && nameContainsAnonymousType;
-            return isAnonymousType;            
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+            if (((!Attribute.IsDefined(type, typeof(CompilerGeneratedAttribute), false) || !type.IsGenericType) || !type.Name.Contains("AnonymousType")) || (!type.Name.StartsWith("<>", StringComparison.OrdinalIgnoreCase) && !type.Name.StartsWith("VB$", StringComparison.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+            TypeAttributes attributes = type.Attributes;
+            return (0 == 0);
         }
     }
 }

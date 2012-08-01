@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SinglePageTest.Extensions;
-using SinglePageTest.Models;
 
 namespace SinglePageTest.Controllers
 {
@@ -12,6 +12,10 @@ namespace SinglePageTest.Controllers
     {
         protected ActionResult ServerBindingResult<T>(string pageTitle, Func<T> dataResolver)
         {
+            // resolve data; convert anonymous types to dynamic, so, views can access them
+            object data = dataResolver();
+            data = data.GetType().IsAnonymousType() ? data.ToExpando() : data;
+
             string controller = this.Request.RequestContext.RouteData.Values["controller"].ToString();
             string action = this.Request.RequestContext.RouteData.Values["action"].ToString();
 
@@ -19,12 +23,12 @@ namespace SinglePageTest.Controllers
             if (Request.IsAjaxRequest())
             {
                 this.Response.Headers.Add("page-title", pageTitle);
-                return PartialView(action, dataResolver());
+                return PartialView(action, data);
             }
 
             ViewBag.Title = pageTitle;
             ViewBag.Module = Utils.GetSinglePageModuleName(controller, action);
-            return View(action, "~/Views/_Single.cshtml", dataResolver());
+            return View(action, "~/Views/_Single.cshtml", data);
         }
 
         /// <summary>
