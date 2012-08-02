@@ -8,51 +8,92 @@ using SinglePageTest.Extensions;
 
 namespace SinglePageTest.Controllers
 {
-    public class SinglePageController : Controller
+
+    public class SinglePageBindingAttribute : ActionFilterAttribute
     {
-        protected ActionResult ServerBindingResult<T>(string pageTitle, Func<T> dataResolver)
+        public string PageTitle { get; set; }
+        public SinglePageBindingType BindingType { get; set; }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            // resolve data; convert anonymous types to dynamic, so, views can access them
-            object data = dataResolver();
-            data = data.GetType().IsAnonymousType() ? data.ToExpando() : data;
-
-            string controller = this.Request.RequestContext.RouteData.Values["controller"].ToString();
-            string action = this.Request.RequestContext.RouteData.Values["action"].ToString();
-
-            // in case of SinglePage navigation to this action we return just partial view
-            if (Request.IsAjaxRequest())
+            if (context.RequestContext.HttpContext.Request.IsAjaxRequest())
             {
-                this.Response.Headers.Add("page-title", pageTitle);
-                return PartialView(action, data);
-            }
+                var result = context.ActionDescriptor.Execute(context.Controller.ControllerContext, context.ActionParameters);
 
-            ViewBag.Title = pageTitle;
-            ViewBag.Module = Utils.GetSinglePageModuleName(controller, action);
-            return View(action, "~/Views/_Single.cshtml", data);
+                if (this.BindingType == SinglePageBindingType.Server)
+                {
+                    result = result.GetType().IsAnonymousType() ? result.ToExpando() : result;
+
+                    context.HttpContext.Response.Headers.Add("page-title", this.GetSafePageTitle(context.ActionDescriptor));
+
+                    context.Controller.ViewData.Model = result;
+                    context.Result = new PartialViewResult
+                    {
+                        ViewName = context.ActionDescriptor.ActionName,
+                        ViewData = context.Controller.ViewData,
+                        TempData = context.Controller.TempData
+                    };
+                }
+                else
+                {
+                    context.HttpContext.Response.Headers.Add("page-title", this.GetSafePageTitle(context.ActionDescriptor));
+                    context.HttpContext.Response.Headers.Add("requires-template", "true");
+                    context.Result = new JsonResult
+                    {
+                        Data = result,
+                        JsonRequestBehavior = JsonRequestBehavior.DenyGet
+                    };
+                }
+            }
+            else
+            {
+                if (this.BindingType == SinglePageBindingType.Server)
+                {
+                    SetupTitleAndModule(context.Controller, context.ActionDescriptor);
+
+                    var result = context.ActionDescriptor.Execute(context.Controller.ControllerContext, context.ActionParameters);
+                    result = result.GetType().IsAnonymousType() ? result.ToExpando() : result;
+
+                    context.Controller.ViewData.Model = result;
+                    context.Result = new ViewResult
+                    {
+                        ViewName = context.ActionDescriptor.ActionName,
+                        MasterName = "~/Views/_Single.cshtml",
+                        ViewData = context.Controller.ViewData,
+                        TempData = context.Controller.TempData
+                    };
+                }
+                else
+                {
+                    SetupTitleAndModule(context.Controller, context.ActionDescriptor);
+
+                    context.Controller.ViewBag.ClientBinding = true;
+
+                    context.Result = new ViewResult
+                    {
+                        ViewName = "~/Views/_Single.cshtml",
+                        ViewData = context.Controller.ViewData,
+                        TempData = context.Controller.TempData
+                    };
+                }
+            }
         }
 
-        /// <summary>
-        /// Client side binding occurs on client. 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="pageTitle"></param>
-        /// <param name="dataResolver"></param>
-        /// <returns></returns>
-        protected ActionResult ClientBindingResult<T>(string pageTitle, Func<T> dataResolver)
+        private void SetupTitleAndModule(ControllerBase controller, ActionDescriptor actionDescriptor)
         {
-            if (Request.IsAjaxRequest())
-            {
-                this.Response.Headers.Add("page-title", pageTitle);
-                this.Response.Headers.Add("requires-template", "true");
-                return Json(dataResolver(), JsonRequestBehavior.DenyGet);
-            }
-
-            string controller = this.Request.RequestContext.RouteData.Values["controller"].ToString();
-            string action = this.Request.RequestContext.RouteData.Values["action"].ToString();
-
-            ViewBag.Title = pageTitle;
-            ViewBag.Module = Utils.GetSinglePageModuleName(controller, action);
-            return View("~/Views/_ClientBindingView.cshtml");
+            var viewBag = controller.ViewBag;
+            viewBag.Title = this.GetSafePageTitle(actionDescriptor);
+            viewBag.Module = Utils.GetSinglePageModuleName(actionDescriptor.ControllerDescriptor.ControllerName, actionDescriptor.ActionName);
         }
+
+        private string GetSafePageTitle(ActionDescriptor actionDescriptor)
+        {
+            return !string.IsNullOrWhiteSpace(this.PageTitle) ? this.PageTitle : actionDescriptor.ActionName;
+        }
+    }
+
+    public enum SinglePageBindingType
+    {
+        Server, Client
     }
 }

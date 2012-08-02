@@ -10,63 +10,57 @@ using SinglePageTest.Extensions;
 
 namespace SinglePageTest.Controllers
 {
-    public class HomeController : SinglePageController
+    public class HomeController : Controller
     {
-        public ActionResult Index()
+        [SinglePageBinding]
+        public object Index()
         {
-            return ServerBindingResult("Index", 
-                () => new 
+            return new 
+            {
+                items = new []
                 {
-                    items = new []
-                    {
-                        new { name = "One" },
-                        new { name = "Two" },
-                    }
+                    new { name = "One" },
+                    new { name = "Two" },
                 }
-            );
+            };
         }
 
-
-        public ActionResult About()
+        [SinglePageBinding(PageTitle = "About Project")]
+        public object About()
         {
-            return ServerBindingResult("About", 
-                () => new
-                {
-                    message = "This is about screen. Time is " + DateTime.Now
-                }
-            );
+            return new
+            {
+                message = "This is about screen. Time is " + DateTime.Now
+            };
         }
 
-
-        public ActionResult Contact()
+        [SinglePageBinding]
+        public object Contact()
         {
             var html = new HtmlHelper(
                     new ViewContext(ControllerContext, new WebFormView(this.ControllerContext, "fake"), new ViewDataDictionary(), new TempDataDictionary(), new StringWriter()),
                     new ViewPage());
 
-            return ServerBindingResult("Contact", 
-                () => new
-                {
-                    message = "(403) 123 4567 - Mikalai Silivonik",
-                    indexLink = html.SinglePageActionLink("Single Page Index", "Index")
-                }
-            );
+            return new
+            {
+                message = "(403) 123 4567 - Mikalai Silivonik",
+                indexLink = html.SinglePageActionLink("Single Page Index", "Index")
+            };
         }
 
 
-        public ActionResult Tasks()
+        [SinglePageBinding(BindingType = SinglePageBindingType.Client)]
+        public object Tasks()
         {
-            return ClientBindingResult("Tasks",
-                () => new
+            return new
+            {
+                items = new[]
                 {
-                    items = new[]
-                    {
-                        new { name = "Do this" },
-                        new { name = "Do that" },
-                        new { name = "Do nothing then" },
-                    }
+                    new { name = "Do this" },
+                    new { name = "Do that" },
+                    new { name = "Do nothing then" },
                 }
-            );
+            };
         }
     }
 }
